@@ -12,16 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
       toyFormContainer.style.display = "none";
     }
   });
+
   
-
-  // fetch('http://localhost:3000/toys')
-  // .then(resp => resp.json())
-  // .then(toys => {
-  //   toys.forEach(toy => {
-  //     displayToy(toy)
-  //   })
-  // })
-
   let form = document.querySelector('form')
   form.addEventListener('submit', addToy)
 
@@ -32,9 +24,30 @@ document.addEventListener("DOMContentLoaded", () => {
       image: document.getElementById('toy_img').value, 
       likes: 0
     }
+    fetch('http://localhost:3000/toys', {
+      method : 'POST',
+      headers : {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body:JSON.stringify(newToy)
+    })
+    .then(resp => resp.json())
+    .then(data => data)
+
     displayToy(newToy)
     form.reset()
   }
+
+
+  fetch('http://localhost:3000/toys')
+  .then(resp => resp.json())
+  .then(toys => {
+    toys.forEach(toy => {
+      displayToy(toy)
+    })
+  })
+
 
   function displayToy (toy) {
     let collection = document.querySelector('#toy-collection')
