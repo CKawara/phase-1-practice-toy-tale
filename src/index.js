@@ -12,12 +12,32 @@ document.addEventListener("DOMContentLoaded", () => {
       toyFormContainer.style.display = "none";
     }
   });
+  
 
-  fetch('http://localhost:3000/toys')
-  .then(resp => resp.json())
-  .then(toys => {
-    toys.forEach(toy => {
-      let collection = document.querySelector('#toy-collection')
+  // fetch('http://localhost:3000/toys')
+  // .then(resp => resp.json())
+  // .then(toys => {
+  //   toys.forEach(toy => {
+  //     displayToy(toy)
+  //   })
+  // })
+
+  let form = document.querySelector('form')
+  form.addEventListener('submit', addToy)
+
+  function addToy(e){
+    e.preventDefault()
+    let newToy = {
+      name:document.getElementById('toy_name').value,
+      image: document.getElementById('toy_img').value, 
+      likes: 0
+    }
+    displayToy(newToy)
+    form.reset()
+  }
+
+  function displayToy (toy) {
+    let collection = document.querySelector('#toy-collection')
       let card = document.createElement('div')
       let h2 = document.createElement('h2')
       let img = document.createElement('img')
@@ -39,7 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
       card.appendChild(p)
       card.appendChild(button)
       collection.appendChild(card)
-    })
-  })
+  }
+
+
 
 });
