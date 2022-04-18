@@ -51,27 +51,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function displayToy (toy) {
     let collection = document.querySelector('#toy-collection')
-      let card = document.createElement('div')
-      let h2 = document.createElement('h2')
-      let img = document.createElement('img')
-      let p = document.createElement('p')
-      let button = document.createElement('button')
+    let card = document.createElement('div')
+    let h2 = document.createElement('h2')
+    let img = document.createElement('img')
+    let p = document.createElement('p')
+    let button = document.createElement('button')
 
-      card.className = 'card'
-      img.className = 'toy-avatar'
-      button.className = "like-btn"
-      button.id = toy['id']
+    card.className = 'card'
+    img.className = 'toy-avatar'
+    button.className = "like-btn"
+    button.id = toy['id']
 
-      h2.innerText = toy['name']
-      img.src = toy['image']
+    h2.innerText = toy['name']
+    img.src = toy['image']
+    p.innerText = toy['likes']
+    button.innerText = 'like'
+
+    card.appendChild(h2)
+    card.appendChild(img)
+    card.appendChild(p)
+    card.appendChild(button)
+    collection.appendChild(card)
+
+    button.addEventListener('click', ()=> {
+      toy['likes']+= 1
       p.innerText = toy['likes']
-      button.innerText = 'like'
-
-      card.appendChild(h2)
-      card.appendChild(img)
-      card.appendChild(p)
-      card.appendChild(button)
-      collection.appendChild(card)
+      fetch(`http://localhost:3000/toys/${toy['id']}`, {
+      method : 'PATCH',
+      headers : {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body:JSON.stringify(toy)
+    })
+    .then(resp => resp.json())
+    .then(data => data)
+    })
   }
 
 
